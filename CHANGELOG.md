@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   at release time (see `cliff.toml` and the release automation in `.github/workflows/`).
 - Compare views: <https://github.com/frederico-kluser/jev-droid/compare/>
 
+## 0.1.0 (2026-10-31)
+
+
+### Features
+
+* bootstrap jev-droid Android automation agent ([#1](https://github.com/frederico-kluser/jev-droid/issues/1)) ([5132d8a](https://github.com/frederico-kluser/jev-droid/commit/5132d8a63b02a25296edebeaaff7c76044bf4b1a))
+
 ## [Unreleased]
 
 ### Added
