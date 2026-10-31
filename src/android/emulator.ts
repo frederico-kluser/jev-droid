@@ -313,16 +313,15 @@ export async function ensureEmulator(options: EnsureEmulatorOptions): Promise<En
 
   if (existingSerial && !options.restart) {
     const adb = new Adb({ adbPath: paths.adb, serial: existingSerial, env });
-    const state = await adb.getState();
-    if (state === "device") {
-      const boot = await adb.getProp("sys.boot_completed").catch(() => "0");
-      if (boot === "1") {
-        await prepareDevice(adb);
-        return { adb, serial: existingSerial, started: false };
-      }
+    try {
+      // An emulator that is still booting shows as `offline`; wait for it instead
+      // of launching a second instance on the same port.
+      await adb.waitForDevice(30_000);
       await waitForEmulator(adb, config.bootTimeoutMs);
       await prepareDevice(adb);
       return { adb, serial: existingSerial, started: false };
+    } catch {
+      // Stale/offline device: fall through and try a fresh boot.
     }
   }
 

@@ -1,7 +1,7 @@
 import path from "node:path";
 import { sdkPaths, type Config } from "../config.js";
 import { Adb, resolveSerial } from "../android/adb.js";
-import { ensureEmulator, prepareDevice, waitForEmulator } from "../android/emulator.js";
+import { ensureEmulator, prepareDevice } from "../android/emulator.js";
 import { parseUiHierarchy, shouldTriage, triageSummary, type UiSnapshot } from "../android/ui.js";
 import { executeAction, parseAction, type Action } from "../android/actions.js";
 import { OpenRouterClient, extractJsonObject, type ChatMessage, type ChatResult, type Usage } from "../openrouter.js";

@@ -15,6 +15,7 @@ test("parseAction accepts tap and rejects unsafe shapes", () => {
   assert.equal(parseAction({ action: "tap", ref: "e1" }).ref, "e1");
   assert.throws(() => parseAction({ action: "tap", ref: "button" }), /invalid action|ref/);
   assert.throws(() => parseAction({ action: "type" }), /text/);
+  assert.throws(() => parseAction({ action: "type", text: "" }), /non-empty/);
   assert.throws(() => parseAction({ action: "launch", package: "not a package" }), /package/);
   assert.throws(() => parseAction({ action: "done" }), /summary/);
 });
@@ -39,6 +40,7 @@ test("riskyTarget flags destructive labels only", () => {
   assert.equal(riskyTarget({ action: "tap", ref: "e1" }, snapshot), 'Button "Delete account" id=delete');
   assert.equal(riskyTarget({ action: "tap", ref: "e2" }, snapshot), undefined);
   assert.equal(riskyTarget({ action: "key", key: "BACK" }, snapshot), undefined);
+  assert.equal(riskyTarget({ action: "key", key: "ENTER" }, snapshot), "key ENTER");
 });
 
 test("actionTarget redacts typed content", () => {

@@ -75,7 +75,9 @@ export function parseAction(raw: unknown): Action {
   if (action.action === "tap_xy" && (action.x === undefined || action.y === undefined)) {
     throw new ActionValidationError("tap_xy requires x and y");
   }
-  if (action.action === "type" && action.text === undefined) throw new ActionValidationError("type requires text");
+  if (action.action === "type" && (action.text === undefined || action.text.length === 0)) {
+    throw new ActionValidationError("type requires non-empty text");
+  }
   if (action.action === "swipe" && !action.direction) throw new ActionValidationError("swipe requires direction");
   if (action.action === "key" && !action.key) throw new ActionValidationError("key requires key");
   if (action.action === "launch" && !action.package) throw new ActionValidationError("launch requires package");
@@ -265,6 +267,13 @@ export function actionTarget(action: Action, snapshot: UiSnapshot): { label: str
 
 /** Cheap local pre-filter: only ask JEV when the target text looks consequential. */
 export function riskyTarget(action: Action, snapshot: UiSnapshot): string | undefined {
+  if (action.action === "key") {
+    // ENTER may activate the focused button; DEL/POWER can also have side effects.
+    if (/^(ENTER|DEL|DELETE|POWER)$/i.test((action.key ?? "").replace(/^KEYCODE_/i, ""))) {
+      return `key ${action.key}`;
+    }
+    return undefined;
+  }
   if (!["tap", "tap_xy", "type", "launch"].includes(action.action)) return undefined;
   const { label } = actionTarget(action, snapshot);
   if (RISKY_TARGET.test(label) || RISKY_TARGET_PT.test(label)) return label;
