@@ -31,7 +31,7 @@ param(
   [string]$SdkRoot = "$env:LOCALAPPDATA\Android\Sdk",
   [string]$AvdName = "jev_google_36",
   [int]$Api = 36,
-  [ValidateSet("google_apis", "aosp_atd", "google_atd", "default")]
+  [ValidateSet("google_apis", "google_apis_playstore", "aosp_atd", "google_atd", "default")]
   [string]$Variant = "google_apis",
   [string]$Device = "pixel_6",
   [string]$CmdlineToolsUrl = "https://dl.google.com/android/repository/commandlinetools-win-15859902_latest.zip",

@@ -20,7 +20,7 @@ export interface CreateAvdOptions {
   paths: SdkPaths;
   name: string;
   api?: number;
-  variant?: "google_apis" | "aosp_atd" | "google_atd" | "default";
+  variant?: "google_apis" | "google_apis_playstore" | "aosp_atd" | "google_atd" | "default";
   abi?: string;
   device?: string;
   force?: boolean;
@@ -167,6 +167,13 @@ export async function createAvd(options: CreateAvdOptions): Promise<{ name: stri
     );
   }
   configureAvd(configPath, { ramMb: options.ramMb, cores: options.cores });
+  if (variant.includes("playstore")) {
+    let content = fs.readFileSync(configPath, "utf8");
+    content = setIniValue(content, "PlayStore.enabled", "yes");
+    content = setIniValue(content, "tag.id", "google_apis_playstore");
+    content = setIniValue(content, "tag.display", "Google Play");
+    fs.writeFileSync(configPath, content, "utf8");
+  }
   return { name: options.name, configPath, created: true };
 }
 

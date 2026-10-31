@@ -73,12 +73,15 @@ O projeto lê `ANDROID_HOME`, `ANDROID_SDK_ROOT` ou o caminho padrão, por esta 
 
 | Imagem | Tamanho | Traz Definições/launcher/Chrome? | Quando usar |
 |---|---:|---|---|
+| `google_apis_playstore;x86_64` | ~1,6 GB | Sim + **Google Play Store** | Instalar apps pela loja; precisa de conta Google |
 | `google_apis;x86_64` | ~1,5 GB | Sim (Settings, Chrome, launcher, GMS básico) | **Predefinição**, automação geral |
 | `default;x86_64` | ~1,2 GB | Parcial | Testes AOSP simples |
 | `aosp_atd;x86_64` | ~700 MB | Não (só `fakesystemapp`) | Testes instrumentados, boot rápido |
 | `google_atd;x86_64` | ~800 MB | Mínimo + GMS | Testes instrumentados com Google APIs |
 
-ATD = *Automated Test Device*: system image oficial, stripped, sem launcher. É excelente para correr APKs de teste, mas **não** para tarefas como “abrir as Definições”. Por isso o AVD predefinido é `google_apis`.
+**Play Store:** a imagem `google_apis` inclui Google Play Services, mas **não** inclui a Google Play Store (pode existir um stub `com.android.vending` sem activity de launcher). Para ter a loja, use `google_apis_playstore`; a imagem só está disponível para perfis Pixel/Nexus e o primeiro acesso pede uma conta Google.
+
+ATD = *Automated Test Device*: system image oficial, stripped, sem launcher. É excelente para correr APKs de teste, mas **não** para tarefas como “abrir as Definições”. Por isso o AVD de automação geral usa `google_apis` ou `google_apis_playstore`.
 
 ## 5. AVD
 
@@ -86,6 +89,9 @@ Criar/afinar manualmente:
 
 ```powershell
 node dist/cli.js avd create --name jev_google_36 --api 36 --variant google_apis --device pixel_6
+
+# Variante com Google Play Store (instalar apps pela loja)
+node dist/cli.js avd create --name jev_playstore_36 --api 36 --variant google_apis_playstore --device pixel_6
 ```
 
 Listar:

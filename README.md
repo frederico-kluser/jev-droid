@@ -72,7 +72,8 @@ O ciclo é **perceber → decidir → proteger → agir → verificar**. Cada pa
 - JDK 21 (o setup instala o Microsoft OpenJDK via winget).
 - Uma chave **OpenRouter** (`sk-or-v1-...`) com créditos. Crie em <https://openrouter.ai/keys>.
 
-> Não é preciso Android Studio, conta Google, Docker ou licença de emulador.
+> Não é preciso Android Studio, Docker ou licença de emulador. Conta Google só é
+> necessária se optar pela imagem com Google Play Store.
 
 ## Instalação rápida
 
@@ -87,6 +88,9 @@ notepad .env        # preencha OPENROUTER_API_KEY
 
 # 2. Instalar JDK + SDK + imagem oficial + AVD (idempotente)
 npm run setup:android
+
+# 2b. Opcional: AVD com Google Play Store (requer conta Google no primeiro acesso)
+npm run avd:setup -- --name jev_playstore_36 --variant google_apis_playstore
 
 # 3. Verificar tudo, incluindo chamadas live ao modelo e ao JEV
 npm run doctor -- --live

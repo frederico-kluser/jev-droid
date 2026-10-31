@@ -227,7 +227,7 @@ async function commandAvd(config: Config, positionals: string[], flags: ParsedAr
     const name = stringFlag(flags, "name") ?? config.avdName;
     const api = numberFlag(flags, "api") ?? 36;
     const variantRaw = stringFlag(flags, "variant") ?? "google_apis";
-    const variants = ["google_apis", "aosp_atd", "google_atd", "default"] as const;
+    const variants = ["google_apis", "google_apis_playstore", "aosp_atd", "google_atd", "default"] as const;
     if (!variants.includes(variantRaw as (typeof variants)[number])) {
       logger.error(`Erro: variante inválida "${variantRaw}" — Solução: ${variants.join(", ")}`);
       process.exitCode = 2;
