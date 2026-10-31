@@ -93,15 +93,25 @@ export async function runDoctor(config: Config, options: DoctorOptions): Promise
         ),
   );
 
-  const image = path.join(config.sdkRoot, "system-images", "android-36", "google_apis", "x86_64", "system.img");
+  let imageRel = path.join("system-images", "android-36", "google_apis", "x86_64");
+  let playStore = false;
+  const activeConfig = avdConfigPath(sdk.paths, config.avdName);
+  if (fs.existsSync(activeConfig)) {
+    const avdConfig = fs.readFileSync(activeConfig, "utf8");
+    const configuredImage = avdConfig.match(/^image\.sysdir\.1=(.+)$/m)?.[1]?.trim();
+    if (configuredImage) imageRel = configuredImage;
+    playStore = /^PlayStore\.enabled=yes$/im.test(avdConfig);
+  }
+  const image = path.join(config.sdkRoot, imageRel, "system.img");
+  const imageLabel = imageRel.replace(/[\\/]+$/, "").replace(/\\/g, "/");
   checks.push(
     fs.existsSync(image)
-      ? check("Imagem Android 36 google_apis", "ok", image)
+      ? check("Imagem do AVD", "ok", `${imageLabel}${playStore ? " · Play Store ativa" : ""}`)
       : check(
-          "Imagem Android 36 google_apis",
+          "Imagem do AVD",
           "warn",
-          "não instalada",
-          'sdkmanager "system-images;android-36;google_apis;x86_64"',
+          `${imageLabel} não instalada`,
+          `sdkmanager "system-images;android-36;${playStore ? "google_apis_playstore" : "google_apis"};x86_64"`,
         ),
   );
 
