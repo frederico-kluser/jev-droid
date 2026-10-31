@@ -1,0 +1,65 @@
+{
+  "name": "jev-droid",
+  "version": "0.1.0",
+  "description": "Android UI automation agent driven by DeepSeek V4.1 Flash 1017 and JEV typed decisions via OpenRouter, using the local Android SDK emulator, ADB and UI Automator.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Frederico Kluser",
+  "homepage": "https://github.com/frederico-kluser/jev-droid#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frederico-kluser/jev-droid.git"
+  },
+  "bugs": {
+    "url": "https://github.com/frederico-kluser/jev-droid/issues"
+  },
+  "keywords": [
+    "android",
+    "automation",
+    "agent",
+    "adb",
+    "uiautomator",
+    "emulator",
+    "avd",
+    "whpx",
+    "openrouter",
+    "deepseek",
+    "jev",
+    "llm"
+  ],
+  "bin": {
+    "jev-droid": "dist/cli.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "files": [
+    "dist",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "tsx src/cli.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/cli.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test test/ui.test.ts test/jev.test.ts test/actions.test.ts test/prompt.test.ts test/config.test.ts test/guard.test.ts",
+    "doctor": "tsx src/cli.ts doctor",
+    "setup:android": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/setup-android.ps1",
+    "selftest": "tsx src/cli.ts selftest",
+    "avd:setup": "tsx src/cli.ts avd create",
+    "emulator:start": "tsx src/cli.ts avd start",
+    "format:check": "node -e \"process.exit(0)\""
+  },
+  "dependencies": {
+    "fast-xml-parser": "^5.11.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  }
+}
