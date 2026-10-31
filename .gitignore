@@ -1,0 +1,31 @@
+# Dependências e build
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Segredos e ambiente local
+.env
+.env.*
+!.env.example
+
+# Artefactos de execução (XML/PNG/JSONL podem conter dados do dispositivo)
+artifacts/
+runs/
+*.log
+
+# Android SDK/AVD locais, caso o utilizador aponte para dentro do repo
+.android-sdk/
+.android/
+*.avd/
+*.img
+*.qcow2
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*~

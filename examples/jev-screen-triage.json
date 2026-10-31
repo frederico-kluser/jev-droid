@@ -1,0 +1,21 @@
+{
+  "model": "typesafe/jev-1.13",
+  "state": {
+    "task": "confirmar o estado do Wi-Fi",
+    "app": "com.android.settings",
+    "screen": "Internet | Wi-Fi | AndroidWifi Connected | Searching for networks..."
+  },
+  "questions": {
+    "screen_state": {
+      "type": "choice",
+      "instructions": "What is the CURRENT state of this Android screen? Choose loading only when a spinner, skeleton or progress indicator is the main content; permission when a blocking system dialog is in front; error when a failure or retry screen dominates; ready when interactive content is available; unknown when the evidence is insufficient.",
+      "criteria": {
+        "ready": "Interactive app content is visible and the user can act.",
+        "loading": "The screen is still loading: spinner, skeleton, progress bar, blank placeholder.",
+        "permission": "A permission, consent or sign-in dialog is blocking the app.",
+        "error": "A failure, offline warning or retry screen dominates.",
+        "unknown": "The text does not make the screen state clear."
+      }
+    }
+  }
+}

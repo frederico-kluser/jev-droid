@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Typecheck & build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Install dependencies (locked)
+        run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Build
+        run: npm run build
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Install dependencies (locked)
+        run: npm ci
+      - name: Unit tests
+        run: npm test
+      - name: Offline selftest
+        run: npm run selftest
+
+  # Aggregator: the job NAME `build` is the required status check in the ruleset.
+  # It also enforces Conventional Commits on the server side (free-plan friendly).
+  build:
+    name: build
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Commits convencionais (últimos 25)
+        run: |
+          python3 - <<'PY'
+          import re, subprocess, sys
+          header = re.compile(r'^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([^)]*\))?!?: .+')
+          skip = re.compile(r'^(Merge |Revert "|Reapply "|fixup!|squash!)')
+          out = subprocess.run(['git', 'log', '--pretty=tformat:%s', '-n', '25', 'HEAD'],
+                               capture_output=True, text=True).stdout
+          bad = 0
+          for s in out.splitlines():
+              s = s.strip()
+              if not s or skip.match(s):
+                  continue
+              h = re.sub(r'\s+\(#\d+\)$', '', s)
+              if not header.match(h) or len(h) > 72:
+                  print('ERRO: mensagem fora de Conventional Commits:', s); bad = 1
+              else:
+                  print('OK  :', s)
+          sys.exit(bad)
+          PY
+

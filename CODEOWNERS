@@ -1,0 +1,15 @@
+# CODEOWNERS — jev-droid
+#
+# Review obligation: every change MUST be approved by the owners of the affected paths
+# before it can be merged (code owner review is required by repository rulesets).
+# The last matching pattern wins; keep the most specific rules at the bottom.
+#
+# Repository rule note: files larger than 3 MB are rejected by the push ruleset
+# (max file size = 3 MB). Do not commit generated artifacts or large binaries.
+
+# Solo-maintainer project: every path is owned by the maintainer.
+# The ruleset still requires a pull request and green status checks before merge.
+*               @frederico-kluser
+/src/           @frederico-kluser
+/docs/          @frederico-kluser
+/.github/       @frederico-kluser
