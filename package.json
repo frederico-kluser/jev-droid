@@ -1,6 +1,6 @@
 {
   "name": "jev-droid",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Android UI automation agent driven by DeepSeek V4.1 Flash 1017 and JEV typed decisions via OpenRouter, using the local Android SDK emulator, ADB and UI Automator.",
   "type": "module",
   "license": "MIT",

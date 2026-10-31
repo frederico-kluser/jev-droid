@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   at release time (see `cliff.toml` and the release automation in `.github/workflows/`).
 - Compare views: <https://github.com/frederico-kluser/jev-droid/compare/>
 
+## [0.1.1](https://github.com/frederico-kluser/jev-droid/compare/jev-droid-v0.1.0...jev-droid-v0.1.1) (2026-10-31)
+
+
+### Documentation
+
+* remove duplicated unreleased changelog block ([#8](https://github.com/frederico-kluser/jev-droid/issues/8)) ([e6c9f83](https://github.com/frederico-kluser/jev-droid/commit/e6c9f83e87c37f0e66ff14bb07f5856312a7e6d9))
+
 ## 0.1.0 (2026-10-31)
 
 
