@@ -27,7 +27,16 @@ export function androidEnv(config: Config): NodeJS.ProcessEnv {
     path.dirname(paths.emulator),
     path.dirname(paths.sdkmanager),
   ].filter((value): value is string => Boolean(value));
-  env.PATH = [...extra, env.PATH ?? ""].join(path.delimiter);
+  // On Windows the real key is `Path`; spreading process.env keeps `Path`, so
+  // setting only `PATH` creates a duplicate that can hide System32 from cmd.exe.
+  const currentPath = env.PATH ?? env.Path ?? "";
+  const fullPath = [...extra, currentPath].filter(Boolean).join(path.delimiter);
+  if (process.platform === "win32") {
+    delete env.PATH;
+    env.Path = fullPath;
+  } else {
+    env.PATH = fullPath;
+  }
   return env;
 }
 
